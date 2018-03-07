@@ -14,6 +14,9 @@ Camera::Camera(enum CameraType camtype) :
 		center << 0,0,0;
 		Eigen::Vector3d cameradir(1, 1, -0.5);
 		eye = center - 500 * cameradir;
+	} else if (this->type == Camera::SIMPLE) {
+		rotx = 55;
+		rotz = 25;
 	}
 	pixel_width = RenderSettings::inst()->img_width;
 	pixel_height = RenderSettings::inst()->img_height;
@@ -22,7 +25,11 @@ Camera::Camera(enum CameraType camtype) :
 
 void Camera::setup(std::vector<double> params)
 {
-	if (params.size() == 7) {
+	if (params.size() == 2) {
+		type = Camera::SIMPLE;
+		rotx = params[0];
+		rotz = params[1];
+	} else if (params.size() == 7) {
 		type = Camera::GIMBAL;
 		object_trans << params[0], params[1], params[2];
 		object_rot << params[3], params[4], params[5];
@@ -32,7 +39,7 @@ void Camera::setup(std::vector<double> params)
 		eye << params[0], params[1], params[2];
 		center << params[3], params[4], params[5];
 	} else {
-		assert("Gimbal cam needs 7 numbers, Vector camera needs 6");
+		assert("Simple cam needs 2 numbers, Gimbal cam needs 7 numbers, Vector camera needs 6");
 	}
 }
 

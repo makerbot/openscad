@@ -16,7 +16,7 @@
 #   resource folder. E.g. using SUFFIX=-nightly will name the
 #   resulting binary openscad-nightly.
 #
-# Please see the 'Building' sections of the OpenSCAD user manual 
+# Please see the 'Building' sections of the OpenSCAD user manual
 # for updated tips & workarounds.
 #
 # http://en.wikibooks.org/wiki/OpenSCAD_User_Manual
@@ -133,7 +133,7 @@ mingw* {
 }
 
 CONFIG += qt
-QT += opengl concurrent
+QT += opengl concurrent gui
 
 # see http://fedoraproject.org/wiki/UnderstandingDSOLinkChange
 # and https://github.com/openscad/openscad/pull/119

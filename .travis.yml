@@ -25,6 +25,7 @@ before_install:
 branches:
   only:
     - master
+    - 2015.03
 
 before_script:
  - echo -e "Host files.openscad.org\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config

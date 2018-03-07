@@ -352,7 +352,7 @@ void GLView::initializeGL()
 
   GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};
   GLfloat light_position0[] = {-1.0, -1.0, +1.0, 0.0};
-  GLfloat light_position1[] = {+1.0, +1.0, -1.0, 0.0};
+  GLfloat light_position1[] = {+1.0, -1.0, -3.5, 0.0};
 
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
   glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
@@ -391,7 +391,7 @@ void GLView::showSmallaxes(const Color4f &col)
   gluLookAt(0.0, -1.0, 0.0,
 						0.0, 0.0, 0.0,
 						0.0, 0.0, 1.0);
-	 
+
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glRotated(cam.object_rot.x(), 1.0, 0.0, 0.0);
@@ -459,7 +459,7 @@ void GLView::showSmallaxes(const Color4f &col)
 void GLView::showAxes(const Color4f &col)
 {
   double l = cam.zoomValue();
-  
+
   // FIXME: doesn't work under Vector Camera
   // Large gray axis cross inline with the model
   glLineWidth(this->getDPI());
@@ -844,4 +844,3 @@ void GLView::decodeMarkerValue(double i, double l, int size_div_sm)
 		}
 	}
 }
-

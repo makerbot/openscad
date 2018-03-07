@@ -29,7 +29,7 @@ build_freetype()
   make -j"$NUMCPU"
   make install
 }
- 
+
 build_libxml2()
 {
   version="$1"
