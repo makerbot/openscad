@@ -81,9 +81,6 @@ bool export_png_preview_common(Tree &tree, Camera &cam, std::ostream &output, Pr
 	BoundingBox bbox = glview->getRenderer()->getBoundingBox();
 	setupCamera(cam, bbox);
 
-<<<<<<< HEAD
-	glview->setCamera(cam);
-=======
 	if (cam.type == Camera::SIMPLE) {
   	double radius = 1.0;
   	if (csgInfo.root_chain) {
@@ -113,7 +110,6 @@ bool export_png_preview_common(Tree &tree, Camera &cam, std::ostream &output, Pr
   }
 
 	csgInfo.glview->setCamera(cam);
->>>>>>> 27c764785e1f8d8667f8ca8945b8c1dfb994bd14
 	OpenCSG::setContext(0);
 	OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::FrameBufferObject);
 #endif
