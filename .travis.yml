@@ -11,12 +11,13 @@ matrix:
         - apt
         - ccache
     - os: linux
-       compiler: gcc
-       env: DIST="xenial"
-       sudo: required
-       cache:
-         - apt
-         - ccache
+      compiler: gcc
+      dist: xenial
+      env: DIST="xenial"
+      sudo: required
+      cache:
+        - apt
+        - ccache
     - os: osx
       compiler: clang
       env: DIST="osx"
@@ -24,14 +25,6 @@ matrix:
         - ccache
         - directories:
           - $HOME/Library/Caches/Homebrew
-
-notifications:
-  irc:
-    channels:
-      - "chat.freenode.net#openscad"
-    on_success: change
-    use_notice: false
-    skip_join: true
 
 before_install:
  # Fix for "write error" build failures  ( https://github.com/travis-ci/travis-ci/issues/8920 )
@@ -101,7 +94,7 @@ addons:
     project:
       name: "makerbot/openscad"
       description: "The Programmers Solid 3D CAD Modeller"
-    notification_email: devop@makerbot.com
+    notification_email: devops@makerbot.com
     build_command_prepend: qmake CONFIG+=experimental CONFIG+=nogui
     build_command: make
     branch_pattern: coverity_scan
