@@ -119,6 +119,33 @@ void GLView::setupCamera()
 		glRotated(cam.object_rot.z(), 0.0, 0.0, 1.0);
 		break;
 	}
+	case Camera::CameraType::SIMPLE: {
+		double radius = 1.0;
+  	if (csgInfo.root_chain) {
+  		// BoundingBox bbox = csgInfo.root_chain->getBoundingBox();
+  		cam.center = (bbox.min() + bbox.max()) / 2;
+  		radius = (bbox.max() - bbox.min()).norm() / 2;
+  	}
+
+	  float angle1 = (cam.rotx * M_PI)/180.0;
+
+    // fudge z angle and zoom in a bit on extreme angles, TODO: There is a better way to do this  :)
+    float zangle1 = (-cam.rotz*2 * M_PI)/180.0;
+    if (cam.rotz >= 90.0 || cam.rotz <= -90.0) {
+			// TOP down
+      radius = radius/3.0;
+    }
+    if (cam.rotz >= 180.0 || cam.rotz <= -180.0) {
+      radius = radius/4.0;
+    }
+
+    // Vector3d cameradir(cos(angle1)-sin(angle1), sin(angle1)+cos(angle1), -0.95);
+    Vector3d cameradir(cos(angle1)-sin(angle1), sin(angle1)+cos(angle1), zangle1);
+    // cam.eye = cam.center - radius * 1.8 * cameradir;
+    cam.eye = cam.center - radius * 3.2 * cameradir;
+		cam.type = Camera::VECTOR;
+		break
+	}
 	case Camera::CameraType::VECTOR: {
 		auto dist = (cam.center - cam.eye).norm();
 		switch (this->cam.projection) {
