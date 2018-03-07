@@ -616,6 +616,8 @@ elseif(UNIX)
 	set(OFFSCREEN_CTX_SOURCE "OffscreenContextGLX.cc" CACHE TYPE STRING)
 	set(OFFSCREEN_IMGUTILS_SOURCE "imageutils-lodepng.cc" CACHE TYPE STRING)
 	set(PLATFORMUTILS_SOURCE "PlatformUtils-posix.cc" CACHE TYPE STRING)
+  find_package(X11 REQUIRED)
+  set(OPENGL_3RD_PARTY_LIBS ${X11_LIBRARIES})
 elseif(WIN32)
 	message(STATUS "Offscreen OpenGL Context - using Microsoft WGL")
 	set(OFFSCREEN_CTX_SOURCE "OffscreenContextWGL.cc" CACHE TYPE STRING)
@@ -769,6 +771,7 @@ endif()
 
 add_library(tests-offscreen STATIC ${OFFSCREEN_SOURCES})
 set_target_properties(tests-offscreen PROPERTIES COMPILE_FLAGS "${ENABLE_OPENCSG_FLAG} -DENABLE_CGAL ${CGAL_CXX_FLAGS_INIT}")
+target_link_libraries(tests-offscreen ${OPENGL_LIBRARIES} ${OPENGL_3RD_PARTY_LIBS})
 
 #
 # modulecachetest
