@@ -6,15 +6,15 @@ Camera::Camera(CameraType camtype) :
 	type(camtype), projection(ProjectionType::PERSPECTIVE), fov(22.5), viewall(false)
 {
 	PRINTD("Camera()");
-	if (this->type == Camera::GIMBAL) {
+	if (this->type == CameraType::GIMBAL) {
 		object_trans << 0,0,0;
 		object_rot << 35,0,25;
 		viewer_distance = 500;
-	} else if (this->type == Camera::VECTOR) {
+	} else if (this->type == CameraType::VECTOR) {
 		center << 0,0,0;
 		Eigen::Vector3d cameradir(1, 1, -0.5);
 		eye = center - 500 * cameradir;
-	} else if (this->type == Camera::SIMPLE) {
+	} else if (this->type == CameraType::SIMPLE) {
 		rotx = 55;
 		rotz = 25;
 	}
@@ -26,11 +26,11 @@ Camera::Camera(CameraType camtype) :
 void Camera::setup(std::vector<double> params)
 {
 	if (params.size() == 2) {
-		type = Camera::SIMPLE;
+		type = CameraType::SIMPLE;
 		rotx = params[0];
 		rotz = params[1];
 	} else if (params.size() == 7) {
-		type = Camera::GIMBAL;
+		type = CameraType::GIMBAL;
 		object_trans << params[0], params[1], params[2];
 		object_rot << params[3], params[4], params[5];
 		viewer_distance = params[6];
