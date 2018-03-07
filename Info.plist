@@ -5,7 +5,7 @@
 	<key>CFBundleName</key>
 	<string>OpenSCAD</string>
 	<key>CFBundleIconFile</key>
-	<string>@ICON@</string>
+	<string>OpenSCAD.icns</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
