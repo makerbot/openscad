@@ -81,7 +81,7 @@ bool export_png_preview_common(Tree &tree, Camera &cam, std::ostream &output, Pr
 	BoundingBox bbox = glview->getRenderer()->getBoundingBox();
 	setupCamera(cam, bbox);
 
-	if (cam.type == Camera::SIMPLE) {
+	if (cam.type == CameraType::SIMPLE) {
   	double radius = 1.0;
   	if (csgInfo.root_chain) {
   		// BoundingBox bbox = csgInfo.root_chain->getBoundingBox();
@@ -106,7 +106,7 @@ bool export_png_preview_common(Tree &tree, Camera &cam, std::ostream &output, Pr
     // cam.eye = cam.center - radius * 1.8 * cameradir;
     cam.eye = cam.center - radius * 3.2 * cameradir;
 
-		cam.type = Camera::VECTOR;
+		cam.type = CameraType::VECTOR;
   }
 
 	csgInfo.glview->setCamera(cam);
