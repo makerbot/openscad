@@ -99,9 +99,9 @@ env:
 addons:
   coverity_scan:
     project:
-      name: "openscad/openscad"
+      name: "makerbot/openscad"
       description: "The Programmers Solid 3D CAD Modeller"
-    notification_email: dev@openscad.org
+    notification_email: devop@makerbot.com
     build_command_prepend: qmake CONFIG+=experimental CONFIG+=nogui
     build_command: make
     branch_pattern: coverity_scan
