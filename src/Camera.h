@@ -23,7 +23,7 @@ projection, Perspective and Orthogonal.
 class Camera
 {
 public:
-	enum class CameraType { NONE, GIMBAL, VECTOR } type;
+	enum class CameraType { NONE, GIMBAL, VECTOR, SIMPLE } type;
 	enum class ProjectionType { ORTHOGONAL, PERSPECTIVE } projection;
 	Camera(CameraType camtype = CameraType::NONE);
 	void setup(std::vector<double> params);
@@ -54,6 +54,10 @@ public:
 	// true if camera should point at center of bounding box
 	// (normally it points at 0,0,0 or at given coordinates)
 	bool autocenter;
+
+	// Simplecam
+	double rotx;
+	double rotz;
 
 	unsigned int pixel_width;
 	unsigned int pixel_height;
