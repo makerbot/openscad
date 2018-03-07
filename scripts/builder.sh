@@ -251,9 +251,10 @@ upload_win_common()
 	fi
 	if [ $DRYRUN ]; then
 		echo dry run, not uploading to files.openscad.org
-		echo scp -v -l $RATELIMIT $filename openscad@files.openscad.org:$remotepath
+	#	echo scp -v -l $RATELIMIT $filename openscad@files.openscad.org:$remotepath
 	else
-		scp -v -l $RATELIMIT $filename openscad@files.openscad.org:$remotepath
+		echo "would upload here"
+	#	scp -v -l $RATELIMIT $filename openscad@files.openscad.org:$remotepath
 	fi
 }
 
