@@ -60,6 +60,8 @@
 #include "csgnode.h"
 #include "CSGTreeEvaluator.h"
 
+#include "opencsg.h"
+
 #include <sstream>
 
 #include "Camera.h"
@@ -130,7 +132,7 @@ public:
 
 static void help(const char *progname, bool failure = false)
 {
-  int tablen = strlen(progname)+8;
+  int tablen = strlen(progname)+9;
   char tabstr[tablen+1];
   for (int i=0;i<tablen;i++) tabstr[i] = ' ';
   tabstr[tablen] = '\0';
@@ -139,13 +141,14 @@ static void help(const char *progname, bool failure = false)
          "%2%[ -m make_command ] [ -D var=val [..] ] \\\n"
 	 "%2%[ --help ] print this help message and exit \\\n"
          "%2%[ --version ] [ --info ] \\\n"
-         "%2%[ --camera=translatex,y,z,rotx,y,z,dist | \\\n"
-         "%2%  --camera=eyex,y,z,centerx,y,z ] \\\n"
+         "%2%[ --camera=rotx,roty | \\\n"
+         "%2%  --camera=eyex,y,z,centerx,y,z | \\\n"
+         "%2%  --camera=translatex,y,z,rotx,y,z,dist ] \\\n"
          "%2%[ --autocenter ] \\\n"
          "%2%[ --viewall ] \\\n"
          "%2%[ --imgsize=width,height ] [ --projection=(o)rtho|(p)ersp] \\\n"
          "%2%[ --render | --preview[=throwntogether] ] \\\n"
-         "%2%[ --colorscheme=[Cornfield|Sunset|Metallic|Starnight|BeforeDawn|Nature|DeepOcean] ] \\\n"
+         "%2%[ --colorscheme=[Cornfield|Sunset|Metallic|Starnight|BeforeDawn|Nature|DeepOcean|Customizer] ] \\\n"
          "%2%[ --csglimit=num ]"
 #ifdef ENABLE_EXPERIMENTAL
          " [ --enable=<feature> ] \\\n"
@@ -210,7 +213,7 @@ Camera get_camera(po::variables_map vm)
 		vector<string> strs;
 		vector<double> cam_parameters;
 		split(strs, vm["camera"].as<string>(), is_any_of(","));
-		if (strs.size() == 6 || strs.size() == 7) {
+		if ( strs.size() == 2 || strs.size()==6 || strs.size()==7 ) {
 			try {
 				for (const auto &s : strs) cam_parameters.push_back(lexical_cast<double>(s));
 				camera.setup(cam_parameters);
@@ -219,8 +222,9 @@ Camera get_camera(po::variables_map vm)
 				PRINT("Camera setup requires numbers as parameters");
 			}
 		} else {
-			PRINT("Camera setup requires either 7 numbers for Gimbal Camera");
-			PRINT("or 6 numbers for Vector Camera");
+      PRINT("Camera setup requires either 2 numbers for Simple Camera\n");
+			PRINT("or 7 numbers for Gimbal Camera\n");
+			PRINT("or 6 numbers for Vector Camera\n");
 			exit(1);
 		}
 	}
@@ -299,12 +303,12 @@ void set_render_color_scheme(const std::string color_scheme, const bool exit_if_
 	if (color_scheme.empty()) {
 		return;
 	}
-	
+
 	if (ColorMap::inst()->findColorScheme(color_scheme)) {
 		RenderSettings::inst()->colorscheme = color_scheme;
 		return;
 	}
-		
+
 	if (exit_if_not_found) {
 		PRINTB("Unknown color scheme '%s'. Valid schemes:", color_scheme);
 		for(const auto &name : ColorMap::inst()->colorSchemeNames()) {
@@ -372,7 +376,7 @@ int cmdline(const char *deps_output_file, const std::string &filename, Camera &c
 	}
 
 	set_render_color_scheme(arg_colorscheme, true);
-	
+
 	// Top context - this context only holds builtins
 	BuiltinContext top_ctx;
 	bool preview = png_output_file ? (renderer==RenderType::OPENCSG || renderer==RenderType::THROWNTOGETHER) : false;
@@ -532,7 +536,7 @@ int cmdline(const char *deps_output_file, const std::string &filename, Camera &c
 				return 1;
 			}
 		}
-		
+
 		if (svg_output_file) {
 			if (!checkAndExport(root_geom, 2, FileFormat::SVG, svg_output_file)) {
 				return 1;
@@ -646,7 +650,7 @@ void dialogInitHandler(FontCacheInitializer *initializer, void *)
 	// Block, in case we're in a separate thread, or the dialog was closed by the user
 	futureWatcher.waitForFinished();
 
-	// We don't always receive the finished signal. We still need the signal to break 
+	// We don't always receive the finished signal. We still need the signal to break
 	// out of the exec() though.
 	QMetaObject::invokeMethod(scadApp, "hideFontCacheDialog");
 }
@@ -798,7 +802,7 @@ int main(int argc, char **argv)
 {
 	int rc = 0;
 	StackCheck::inst()->init();
-	
+
 #ifdef Q_OS_MAC
 	bool isGuiLaunched = getenv("GUI_LAUNCHED") != nullptr;
 	if (isGuiLaunched) set_output_handler(CocoaUtils::nslog, nullptr);
@@ -830,6 +834,8 @@ int main(int argc, char **argv)
 		("autocenter", "adjust camera to look at object center")
 		("viewall", "adjust camera to fit object")
 		("imgsize", po::value<string>(), "=width,height for exporting png")
+		("background_color", po::value<string>(), "background color when exporting png")
+		("model_color", po::value<string>(), "model color color when exporting png")
 		("projection", po::value<string>(), "(o)rtho or (p)erspective when exporting png")
 		("colorscheme", po::value<string>(), "colorscheme")
 		("debug", po::value<string>(), "special debug info")
@@ -905,7 +911,7 @@ int main(int argc, char **argv)
 		if (output_file) help(argv[0], true);
 		output_file = vm["s"].as<string>().c_str();
 	}
-	if (vm.count("x")) { 
+	if (vm.count("x")) {
 		printDeprecation("The -x option is deprecated. Use -o instead.\n");
 		if (output_file) help(argv[0], true);
 		output_file = vm["x"].as<string>().c_str();
