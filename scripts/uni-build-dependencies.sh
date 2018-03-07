@@ -309,7 +309,7 @@ build_boost()
     curl --insecure -LO http://downloads.sourceforge.net/project/boost/boost/$version/boost_$bversion.tar.bz2
   fi
   if [ ! $? -eq 0 ]; then
-    echo download failed. 
+    echo download failed.
     exit 1
   fi
   tar xjf boost_$bversion.tar.bz2
@@ -795,7 +795,7 @@ fi
 # This is only for libraries most systems won't have new enough versions of.
 # For big things like Qt4, see the notes at the head of this file on
 # building individual dependencies.
-# 
+#
 # Some of these are defined in scripts/common-build-dependencies.sh
 
 build_eigen 3.2.2
