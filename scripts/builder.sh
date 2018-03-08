@@ -54,7 +54,7 @@ init_variables()
 	RATELIMIT=420
 	DOBUILD=1
 	DOUPLOAD=1
-	DRYRUN=
+	DRYRUN=1
 	DOSNAPSHOT=1
 	DOLOOP=
 	#solar day
