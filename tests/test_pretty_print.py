@@ -512,8 +512,8 @@ def main():
         build = os.getenv("TRAVIS_BUILD_NUMBER")
         if build: filename = 'travis-' + build + '_report.html'
         else: filename = html_basename
-        os.system('scp "%s" "%s:%s"' %
-                  (html_filename, 'openscad@files.openscad.org', 'www/tests/' + filename) )
+#        os.system('scp "%s" "%s:%s"' %
+ #                 (html_filename, 'openscad@files.openscad.org', 'www/tests/' + filename) )
         share_url = 'http://files.openscad.org/tests/' + filename;
         print('html report uploaded:')
         print(share_url)
